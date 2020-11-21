@@ -1,4 +1,4 @@
-package it.gabrieletondi.telldontaskkata.useCase;
+package it.gabrieletondi.telldontaskkata.orders;
 
 import java.util.List;
 

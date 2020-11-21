@@ -1,4 +1,4 @@
-package it.gabrieletondi.telldontaskkata.useCase;
+package it.gabrieletondi.telldontaskkata.orders;
 
 import it.gabrieletondi.telldontaskkata.domain.Category;
 import it.gabrieletondi.telldontaskkata.domain.Order;
@@ -6,6 +6,10 @@ import it.gabrieletondi.telldontaskkata.domain.OrderStatus;
 import it.gabrieletondi.telldontaskkata.domain.Product;
 import it.gabrieletondi.telldontaskkata.doubles.InMemoryProductCatalog;
 import it.gabrieletondi.telldontaskkata.doubles.TestOrderRepository;
+import it.gabrieletondi.telldontaskkata.orders.OrderCreationUseCase;
+import it.gabrieletondi.telldontaskkata.orders.SellItemRequest;
+import it.gabrieletondi.telldontaskkata.orders.SellItemsRequest;
+import it.gabrieletondi.telldontaskkata.orders.UnknownProductException;
 import it.gabrieletondi.telldontaskkata.repository.ProductCatalog;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
