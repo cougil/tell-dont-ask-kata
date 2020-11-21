@@ -6,12 +6,7 @@ import it.gabrieletondi.telldontaskkata.domain.OrderStatus;
 import it.gabrieletondi.telldontaskkata.domain.Product;
 import it.gabrieletondi.telldontaskkata.doubles.InMemoryProductCatalog;
 import it.gabrieletondi.telldontaskkata.doubles.TestOrderRepository;
-import it.gabrieletondi.telldontaskkata.orders.OrderCreationUseCase;
-import it.gabrieletondi.telldontaskkata.orders.SellItemRequest;
-import it.gabrieletondi.telldontaskkata.orders.SellItemsRequest;
-import it.gabrieletondi.telldontaskkata.orders.UnknownProductException;
 import it.gabrieletondi.telldontaskkata.repository.ProductCatalog;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -19,8 +14,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
-public class OrderCreationUseCaseTest {
+public class OrderCreationUseCaseShould {
     private final TestOrderRepository orderRepository = new TestOrderRepository();
     private Category food = new Category() {{
         setName("food");
@@ -85,7 +81,7 @@ public class OrderCreationUseCaseTest {
         unknownProductRequest.setProductName("unknown product");
         request.getRequests().add(unknownProductRequest);
 
-        Assertions.assertThatExceptionOfType(UnknownProductException.class)
+        assertThatExceptionOfType(UnknownProductException.class)
                 .isThrownBy( () -> useCase.run(request));
     }
 }

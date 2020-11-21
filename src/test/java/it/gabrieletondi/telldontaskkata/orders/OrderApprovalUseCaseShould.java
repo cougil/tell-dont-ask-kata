@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
-public class OrderApprovalUseCaseTest {
+public class OrderApprovalUseCaseShould {
     private final TestOrderRepository orderRepository = new TestOrderRepository();
     private final OrderApprovalUseCase useCase = new OrderApprovalUseCase(orderRepository);
 
