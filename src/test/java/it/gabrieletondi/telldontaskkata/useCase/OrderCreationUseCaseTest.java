@@ -7,16 +7,14 @@ import it.gabrieletondi.telldontaskkata.domain.Product;
 import it.gabrieletondi.telldontaskkata.doubles.InMemoryProductCatalog;
 import it.gabrieletondi.telldontaskkata.doubles.TestOrderRepository;
 import it.gabrieletondi.telldontaskkata.repository.ProductCatalog;
-import org.junit.Test;
+import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class OrderCreationUseCaseTest {
     private final TestOrderRepository orderRepository = new TestOrderRepository();
@@ -41,7 +39,7 @@ public class OrderCreationUseCaseTest {
     private final OrderCreationUseCase useCase = new OrderCreationUseCase(orderRepository, productCatalog);
 
     @Test
-    public void sellMultipleItems() throws Exception {
+    public void sellMultipleItems() {
         SellItemRequest saladRequest = new SellItemRequest();
         saladRequest.setProductName("salad");
         saladRequest.setQuantity(2);
@@ -58,31 +56,32 @@ public class OrderCreationUseCaseTest {
         useCase.run(request);
 
         final Order insertedOrder = orderRepository.getSavedOrder();
-        assertThat(insertedOrder.getStatus(), is(OrderStatus.CREATED));
-        assertThat(insertedOrder.getTotal(), is(new BigDecimal("23.20")));
-        assertThat(insertedOrder.getTax(), is(new BigDecimal("2.13")));
-        assertThat(insertedOrder.getCurrency(), is("EUR"));
-        assertThat(insertedOrder.getItems(), hasSize(2));
-        assertThat(insertedOrder.getItems().get(0).getProduct().getName(), is("salad"));
-        assertThat(insertedOrder.getItems().get(0).getProduct().getPrice(), is(new BigDecimal("3.56")));
-        assertThat(insertedOrder.getItems().get(0).getQuantity(), is(2));
-        assertThat(insertedOrder.getItems().get(0).getTaxedAmount(), is(new BigDecimal("7.84")));
-        assertThat(insertedOrder.getItems().get(0).getTax(), is(new BigDecimal("0.72")));
-        assertThat(insertedOrder.getItems().get(1).getProduct().getName(), is("tomato"));
-        assertThat(insertedOrder.getItems().get(1).getProduct().getPrice(), is(new BigDecimal("4.65")));
-        assertThat(insertedOrder.getItems().get(1).getQuantity(), is(3));
-        assertThat(insertedOrder.getItems().get(1).getTaxedAmount(), is(new BigDecimal("15.36")));
-        assertThat(insertedOrder.getItems().get(1).getTax(), is(new BigDecimal("1.41")));
+        assertThat(insertedOrder.getStatus()).isEqualTo(OrderStatus.CREATED);
+        assertThat(insertedOrder.getTotal()).isEqualTo(new BigDecimal("23.20"));
+        assertThat(insertedOrder.getTax()).isEqualTo(new BigDecimal("2.13"));
+        assertThat(insertedOrder.getCurrency()).isEqualTo("EUR");
+        assertThat(insertedOrder.getItems()).hasSize(2);
+        assertThat(insertedOrder.getItems().get(0).getProduct().getName()).isEqualTo("salad");
+        assertThat(insertedOrder.getItems().get(0).getProduct().getPrice()).isEqualTo(new BigDecimal("3.56"));
+        assertThat(insertedOrder.getItems().get(0).getQuantity()).isEqualTo(2);
+        assertThat(insertedOrder.getItems().get(0).getTaxedAmount()).isEqualTo(new BigDecimal("7.84"));
+        assertThat(insertedOrder.getItems().get(0).getTax()).isEqualTo(new BigDecimal("0.72"));
+        assertThat(insertedOrder.getItems().get(1).getProduct().getName()).isEqualTo("tomato");
+        assertThat(insertedOrder.getItems().get(1).getProduct().getPrice()).isEqualTo(new BigDecimal("4.65"));
+        assertThat(insertedOrder.getItems().get(1).getQuantity()).isEqualTo(3);
+        assertThat(insertedOrder.getItems().get(1).getTaxedAmount()).isEqualTo(new BigDecimal("15.36"));
+        assertThat(insertedOrder.getItems().get(1).getTax()).isEqualTo(new BigDecimal("1.41"));
     }
 
-    @Test(expected = UnknownProductException.class)
-    public void unknownProduct() throws Exception {
+    @Test
+    public void unknownProduct() {
         SellItemsRequest request = new SellItemsRequest();
         request.setRequests(new ArrayList<>());
         SellItemRequest unknownProductRequest = new SellItemRequest();
         unknownProductRequest.setProductName("unknown product");
         request.getRequests().add(unknownProductRequest);
 
-        useCase.run(request);
+        Assertions.assertThatExceptionOfType(UnknownProductException.class)
+                .isThrownBy( () -> useCase.run(request));
     }
 }
