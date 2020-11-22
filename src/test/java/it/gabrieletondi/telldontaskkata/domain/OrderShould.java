@@ -58,4 +58,14 @@ class OrderShould {
         assertThat(order.getTotal()).isEqualTo(taxedAmount);
         assertThat(order.getTax()).isEqualTo(tax);
     }
+
+    @Test
+    void identify_if_is_equal_to_another() {
+        final Product validProduct = OrderObjectMother.TOMATO;
+        order.add(QUANTITY, validProduct);
+
+        Order expectedOrder = new Order();
+        expectedOrder.add(QUANTITY, validProduct);
+        assertThat(order).isEqualTo(expectedOrder);
+    }
 }
