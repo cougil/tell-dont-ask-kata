@@ -1,8 +1,13 @@
 package it.gabrieletondi.telldontaskkata.domain;
 
+import it.gabrieletondi.telldontaskkata.orders.UnknownProductException;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+
+import static java.math.BigDecimal.valueOf;
+import static java.math.RoundingMode.HALF_UP;
 
 public class Order {
 
@@ -61,5 +66,25 @@ public class Order {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public void add(int quantity, Product product) {
+        if (product == null) {
+            throw new UnknownProductException();
+        }
+
+        final BigDecimal unitaryTax = product.getPrice().divide(valueOf(100)).multiply(product.getCategory().getTaxPercentage()).setScale(2, HALF_UP);
+        final BigDecimal unitaryTaxedAmount = product.getPrice().add(unitaryTax).setScale(2, HALF_UP);
+        final BigDecimal taxedAmount = unitaryTaxedAmount.multiply(valueOf(quantity)).setScale(2, HALF_UP);
+        final BigDecimal taxAmount = unitaryTax.multiply(valueOf(quantity));
+
+        addItem( new OrderItem(quantity, product, taxAmount, taxedAmount) );
+
+        setTotal(getTotal().add(taxedAmount));
+        setTax(getTax().add(taxAmount));
+    }
+
+    private void addItem(OrderItem orderItem) {
+        items.add(orderItem);
     }
 }

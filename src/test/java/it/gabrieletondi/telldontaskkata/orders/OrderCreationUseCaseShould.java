@@ -1,42 +1,19 @@
 package it.gabrieletondi.telldontaskkata.orders;
 
-import it.gabrieletondi.telldontaskkata.domain.Category;
 import it.gabrieletondi.telldontaskkata.domain.Order;
 import it.gabrieletondi.telldontaskkata.domain.OrderStatus;
-import it.gabrieletondi.telldontaskkata.domain.Product;
-import it.gabrieletondi.telldontaskkata.doubles.InMemoryProductCatalog;
 import it.gabrieletondi.telldontaskkata.doubles.TestOrderRepository;
-import it.gabrieletondi.telldontaskkata.repository.ProductCatalog;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 public class OrderCreationUseCaseShould {
     private final TestOrderRepository orderRepository = new TestOrderRepository();
-    private Category food = new Category() {{
-        setName("food");
-        setTaxPercentage(new BigDecimal("10"));
-    }};;
-    private final ProductCatalog productCatalog = new InMemoryProductCatalog(
-            Arrays.<Product>asList(
-                    new Product() {{
-                        setName("salad");
-                        setPrice(new BigDecimal("3.56"));
-                        setCategory(food);
-                    }},
-                    new Product() {{
-                        setName("tomato");
-                        setPrice(new BigDecimal("4.65"));
-                        setCategory(food);
-                    }}
-            )
-    );
-    private final OrderCreationUseCase useCase = new OrderCreationUseCase(orderRepository, productCatalog);
+    private final OrderCreationUseCase useCase = new OrderCreationUseCase(orderRepository, OrderObjectMother.productCatalog);
 
     @Test
     public void sellMultipleItems() {
