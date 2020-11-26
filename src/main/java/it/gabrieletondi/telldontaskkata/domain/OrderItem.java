@@ -5,36 +5,16 @@ import java.util.Objects;
 import java.util.StringJoiner;
 
 public class OrderItem {
-    private Product product;
-    private int quantity;
-    private BigDecimal taxedAmount;
-    private BigDecimal tax;
+    private final Product product;
+    private final int quantity;
+    private final BigDecimal taxedAmount;
+    private final BigDecimal tax;
 
     public OrderItem(int quantity, Product product, BigDecimal tax, BigDecimal taxedAmount) {
         this.quantity = quantity;
         this.product = product;
         this.tax = tax;
         this.taxedAmount = taxedAmount;
-    }
-
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public BigDecimal getTaxedAmount() {
-        return taxedAmount;
-    }
-
-    public BigDecimal getTax() {
-        return tax;
     }
 
     @Override

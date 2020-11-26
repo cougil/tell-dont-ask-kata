@@ -2,13 +2,14 @@ package it.gabrieletondi.telldontaskkata.orders;
 
 import it.gabrieletondi.telldontaskkata.domain.Order;
 import it.gabrieletondi.telldontaskkata.domain.OrderItem;
-import it.gabrieletondi.telldontaskkata.domain.OrderStatus;
 import it.gabrieletondi.telldontaskkata.doubles.TestOrderRepository;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
+import static it.gabrieletondi.telldontaskkata.orders.OrderObjectMother.SALAD;
+import static it.gabrieletondi.telldontaskkata.orders.OrderObjectMother.TOMATO;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
@@ -34,25 +35,18 @@ public class OrderCreationUseCaseShould {
         useCase.run(request);
 
         final Order insertedOrder = orderRepository.getSavedOrder();
-        assertThat(insertedOrder.getStatus()).isEqualTo(OrderStatus.CREATED);
-        assertThat(insertedOrder.getTotal()).isEqualTo(new BigDecimal("23.20"));
-        assertThat(insertedOrder.getTax()).isEqualTo(new BigDecimal("2.13"));
-        assertThat(insertedOrder.getCurrency()).isEqualTo("EUR");
-        assertThat(insertedOrder.getItems()).hasSize(2);
+        Order expectedOrder = new Order();
+        expectedOrder.add(2, SALAD);
+        expectedOrder.add(3, TOMATO);
+        assertThat(insertedOrder).isEqualTo(expectedOrder);
 
         final OrderItem saladItem = insertedOrder.getItems().get(0);
-        assertThat(saladItem.getProduct().getName()).isEqualTo("salad");
-        assertThat(saladItem.getProduct().getPrice()).isEqualTo(new BigDecimal("3.56"));
-        assertThat(saladItem.getQuantity()).isEqualTo(2);
-        assertThat(saladItem.getTaxedAmount()).isEqualTo(new BigDecimal("7.84"));
-        assertThat(saladItem.getTax()).isEqualTo(new BigDecimal("0.72"));
+        OrderItem expectedSaladItem = new OrderItem(2, SALAD, new BigDecimal("0.72"), new BigDecimal("7.84"));
+        assertThat(saladItem).isEqualTo(expectedSaladItem);
 
         final OrderItem tomatoItem = insertedOrder.getItems().get(1);
-        assertThat(tomatoItem.getProduct().getName()).isEqualTo("tomato");
-        assertThat(tomatoItem.getProduct().getPrice()).isEqualTo(new BigDecimal("4.65"));
-        assertThat(tomatoItem.getQuantity()).isEqualTo(3);
-        assertThat(tomatoItem.getTaxedAmount()).isEqualTo(new BigDecimal("15.36"));
-        assertThat(tomatoItem.getTax()).isEqualTo(new BigDecimal("1.41"));
+        OrderItem expectedTomatoItem = new OrderItem(3, TOMATO, new BigDecimal("1.41"), new BigDecimal("15.36"));
+        assertThat(tomatoItem).isEqualTo(expectedTomatoItem);
     }
 
     @Test
