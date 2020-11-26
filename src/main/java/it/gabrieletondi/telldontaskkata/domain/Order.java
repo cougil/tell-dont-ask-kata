@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.StringJoiner;
 
+import static it.gabrieletondi.telldontaskkata.domain.OrderStatus.*;
 import static java.math.BigDecimal.valueOf;
 import static java.math.RoundingMode.HALF_UP;
 
@@ -15,18 +16,22 @@ public class Order {
 
     private static final BigDecimal ZERO = new BigDecimal("0.00");
 
-    private List<OrderItem> items = new ArrayList();
+    private final List<OrderItem> items = new ArrayList();
     private BigDecimal total = ZERO;
     private BigDecimal tax = ZERO;
     private OrderStatus status = OrderStatus.CREATED;
     private int id;
 
-    public BigDecimal getTotal() {
-        return total;
+    public Order(int id, OrderStatus status) {
+        this.id = id;
+        this.status = status;
     }
 
-    public void setTotal(BigDecimal total) {
-        this.total = total;
+    public Order() {
+    }
+
+    public BigDecimal getTotal() {
+        return total;
     }
 
     public String getCurrency() {
@@ -41,24 +46,12 @@ public class Order {
         return tax;
     }
 
-    public void setTax(BigDecimal tax) {
-        this.tax = tax;
-    }
-
     public OrderStatus getStatus() {
         return status;
     }
 
-    public void setStatus(OrderStatus status) {
-        this.status = status;
-    }
-
     public int getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public void add(int quantity, Product product) {
@@ -73,8 +66,8 @@ public class Order {
 
         addItem( new OrderItem(quantity, product, taxAmount, taxedAmount) );
 
-        setTotal(getTotal().add(taxedAmount));
-        setTax(getTax().add(taxAmount));
+        this.total = getTotal().add(taxedAmount);
+        this.tax = getTax().add(taxAmount);
     }
 
     private void addItem(OrderItem orderItem) {
@@ -107,5 +100,14 @@ public class Order {
                 .add("status=" + status)
                 .add("id=" + id)
                 .toString();
+    }
+
+    public void approved(boolean approved) {
+        if (approved) this.status = APPROVED;
+        else this.status = REJECTED;
+    }
+
+    public void shipped() {
+        this.status = SHIPPED;
     }
 }

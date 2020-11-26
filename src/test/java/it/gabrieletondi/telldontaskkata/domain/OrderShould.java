@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 import java.util.List;
 
-import static it.gabrieletondi.telldontaskkata.domain.OrderStatus.CREATED;
+import static it.gabrieletondi.telldontaskkata.domain.OrderStatus.*;
 import static java.math.RoundingMode.HALF_UP;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -16,8 +16,8 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 class OrderShould {
 
     private static final BigDecimal ZERO = new BigDecimal("0.00");
-    private Order order;
     public static final int QUANTITY = 5;
+    private Order order;
 
     @BeforeEach
     void setUp() {
@@ -67,5 +67,23 @@ class OrderShould {
         Order expectedOrder = new Order();
         expectedOrder.add(QUANTITY, validProduct);
         assertThat(order).isEqualTo(expectedOrder);
+    }
+
+    @Test
+    void change_its_status_to_approved() {
+        order.approved(true);
+        assertThat(order.getStatus()).isEqualTo(APPROVED);
+    }
+
+    @Test
+    void change_its_status_to_rejected_when_not_approved() {
+        order.approved(false);
+        assertThat(order.getStatus()).isEqualTo(REJECTED);
+    }
+
+    @Test
+    void change_its_status_to_shipped() {
+        order.shipped();
+        assertThat(order.getStatus()).isEqualTo(SHIPPED);
     }
 }

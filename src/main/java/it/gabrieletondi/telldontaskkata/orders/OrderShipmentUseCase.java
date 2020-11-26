@@ -1,13 +1,10 @@
 package it.gabrieletondi.telldontaskkata.orders;
 
 import it.gabrieletondi.telldontaskkata.domain.Order;
-import it.gabrieletondi.telldontaskkata.domain.OrderStatus;
 import it.gabrieletondi.telldontaskkata.repository.OrderRepository;
 import it.gabrieletondi.telldontaskkata.service.ShipmentService;
 
-import static it.gabrieletondi.telldontaskkata.domain.OrderStatus.CREATED;
-import static it.gabrieletondi.telldontaskkata.domain.OrderStatus.REJECTED;
-import static it.gabrieletondi.telldontaskkata.domain.OrderStatus.SHIPPED;
+import static it.gabrieletondi.telldontaskkata.domain.OrderStatus.*;
 
 public class OrderShipmentUseCase {
     private final OrderRepository orderRepository;
@@ -31,7 +28,7 @@ public class OrderShipmentUseCase {
 
         shipmentService.ship(order);
 
-        order.setStatus(OrderStatus.SHIPPED);
+        order.shipped();
         orderRepository.save(order);
     }
 }

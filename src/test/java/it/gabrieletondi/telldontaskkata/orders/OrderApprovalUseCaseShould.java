@@ -5,6 +5,7 @@ import it.gabrieletondi.telldontaskkata.domain.OrderStatus;
 import it.gabrieletondi.telldontaskkata.doubles.TestOrderRepository;
 import org.junit.jupiter.api.Test;
 
+import static it.gabrieletondi.telldontaskkata.domain.OrderStatus.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
@@ -14,9 +15,7 @@ public class OrderApprovalUseCaseShould {
 
     @Test
     public void approvedExistingOrder() {
-        Order initialOrder = new Order();
-        initialOrder.setStatus(OrderStatus.CREATED);
-        initialOrder.setId(1);
+        Order initialOrder = new Order(1, CREATED);
         orderRepository.addOrder(initialOrder);
 
         OrderApprovalRequest request = new OrderApprovalRequest();
@@ -31,9 +30,7 @@ public class OrderApprovalUseCaseShould {
 
     @Test
     public void rejectedExistingOrder() {
-        Order initialOrder = new Order();
-        initialOrder.setStatus(OrderStatus.CREATED);
-        initialOrder.setId(1);
+        Order initialOrder = new Order(1, CREATED);
         orderRepository.addOrder(initialOrder);
 
         OrderApprovalRequest request = new OrderApprovalRequest();
@@ -48,9 +45,7 @@ public class OrderApprovalUseCaseShould {
 
     @Test
     public void cannotApproveRejectedOrder() {
-        Order initialOrder = new Order();
-        initialOrder.setStatus(OrderStatus.REJECTED);
-        initialOrder.setId(1);
+        Order initialOrder = new Order(1, REJECTED);
         orderRepository.addOrder(initialOrder);
 
         OrderApprovalRequest request = new OrderApprovalRequest();
@@ -65,9 +60,7 @@ public class OrderApprovalUseCaseShould {
 
     @Test
     public void cannotRejectApprovedOrder() {
-        Order initialOrder = new Order();
-        initialOrder.setStatus(OrderStatus.APPROVED);
-        initialOrder.setId(1);
+        Order initialOrder = new Order(1, APPROVED);
         orderRepository.addOrder(initialOrder);
 
         OrderApprovalRequest request = new OrderApprovalRequest();
@@ -82,9 +75,7 @@ public class OrderApprovalUseCaseShould {
 
     @Test
     public void shippedOrdersCannotBeApproved() {
-        Order initialOrder = new Order();
-        initialOrder.setStatus(OrderStatus.SHIPPED);
-        initialOrder.setId(1);
+        Order initialOrder = new Order(1, SHIPPED);
         orderRepository.addOrder(initialOrder);
 
         OrderApprovalRequest request = new OrderApprovalRequest();
@@ -99,9 +90,7 @@ public class OrderApprovalUseCaseShould {
 
     @Test
     public void shippedOrdersCannotBeRejected() {
-        Order initialOrder = new Order();
-        initialOrder.setStatus(OrderStatus.SHIPPED);
-        initialOrder.setId(1);
+        Order initialOrder = new Order(1, SHIPPED);
         orderRepository.addOrder(initialOrder);
 
         OrderApprovalRequest request = new OrderApprovalRequest();

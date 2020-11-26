@@ -6,6 +6,7 @@ import it.gabrieletondi.telldontaskkata.doubles.TestOrderRepository;
 import it.gabrieletondi.telldontaskkata.doubles.TestShipmentService;
 import org.junit.jupiter.api.Test;
 
+import static it.gabrieletondi.telldontaskkata.domain.OrderStatus.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
@@ -16,9 +17,7 @@ public class OrderShipmentUseCaseShould {
 
     @Test
     public void shipApprovedOrder() {
-        Order initialOrder = new Order();
-        initialOrder.setId(1);
-        initialOrder.setStatus(OrderStatus.APPROVED);
+        Order initialOrder = new Order(1, APPROVED);
         orderRepository.addOrder(initialOrder);
 
         OrderShipmentRequest request = new OrderShipmentRequest();
@@ -32,9 +31,7 @@ public class OrderShipmentUseCaseShould {
 
     @Test
     public void createdOrdersCannotBeShipped() {
-        Order initialOrder = new Order();
-        initialOrder.setId(1);
-        initialOrder.setStatus(OrderStatus.CREATED);
+        Order initialOrder = new Order(1, CREATED);
         orderRepository.addOrder(initialOrder);
 
         OrderShipmentRequest request = new OrderShipmentRequest();
@@ -49,9 +46,7 @@ public class OrderShipmentUseCaseShould {
 
     @Test
     public void rejectedOrdersCannotBeShipped() {
-        Order initialOrder = new Order();
-        initialOrder.setId(1);
-        initialOrder.setStatus(OrderStatus.REJECTED);
+        Order initialOrder = new Order(1, REJECTED);
         orderRepository.addOrder(initialOrder);
 
         OrderShipmentRequest request = new OrderShipmentRequest();
@@ -66,9 +61,7 @@ public class OrderShipmentUseCaseShould {
 
     @Test
     public void shippedOrdersCannotBeShippedAgain() {
-        Order initialOrder = new Order();
-        initialOrder.setId(1);
-        initialOrder.setStatus(OrderStatus.SHIPPED);
+        Order initialOrder = new Order(1, SHIPPED);
         orderRepository.addOrder(initialOrder);
 
         OrderShipmentRequest request = new OrderShipmentRequest();
