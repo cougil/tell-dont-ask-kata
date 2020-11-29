@@ -17,7 +17,7 @@ public class Order {
 
     private static final BigDecimal ZERO = new BigDecimal("0.00");
 
-    private final List<OrderItem> items = new ArrayList();
+    private final List<OrderItem> items = new ArrayList<>();
     private BigDecimal total = ZERO;
     private BigDecimal tax = ZERO;
     private OrderStatus status = OrderStatus.CREATED;
@@ -106,5 +106,21 @@ public class Order {
                 .add("status=" + status)
                 .add("id=" + id)
                 .toString();
+    }
+
+    boolean isShipped() {
+        return SHIPPED.equals(getStatus());
+    }
+
+    boolean isRejected() {
+        return REJECTED.equals(getStatus());
+    }
+
+    boolean isApproved() {
+        return APPROVED.equals(getStatus());
+    }
+
+    boolean isCreated() {
+        return CREATED.equals(getStatus());
     }
 }
