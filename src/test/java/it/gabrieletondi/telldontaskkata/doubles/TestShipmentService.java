@@ -1,6 +1,6 @@
 package it.gabrieletondi.telldontaskkata.doubles;
 
-import it.gabrieletondi.telldontaskkata.domain.Order;
+import it.gabrieletondi.telldontaskkata.orders.Order;
 import it.gabrieletondi.telldontaskkata.service.ShipmentService;
 
 public class TestShipmentService implements ShipmentService {
@@ -13,5 +13,6 @@ public class TestShipmentService implements ShipmentService {
     @Override
     public void ship(Order order) {
         this.shippedOrder = order;
+        shippedOrder.shipped();
     }
 }

@@ -1,11 +1,9 @@
 package it.gabrieletondi.telldontaskkata.orders;
 
-import it.gabrieletondi.telldontaskkata.domain.Order;
-import it.gabrieletondi.telldontaskkata.domain.OrderStatus;
 import it.gabrieletondi.telldontaskkata.doubles.TestOrderRepository;
 import org.junit.jupiter.api.Test;
 
-import static it.gabrieletondi.telldontaskkata.domain.OrderStatus.*;
+import static it.gabrieletondi.telldontaskkata.orders.OrderStatus.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 

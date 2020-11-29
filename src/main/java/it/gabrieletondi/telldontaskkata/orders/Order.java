@@ -1,6 +1,7 @@
-package it.gabrieletondi.telldontaskkata.domain;
+package it.gabrieletondi.telldontaskkata.orders;
 
-import it.gabrieletondi.telldontaskkata.orders.UnknownProductException;
+import it.gabrieletondi.telldontaskkata.domain.OrderItem;
+import it.gabrieletondi.telldontaskkata.domain.Product;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -8,7 +9,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.StringJoiner;
 
-import static it.gabrieletondi.telldontaskkata.domain.OrderStatus.*;
+import static it.gabrieletondi.telldontaskkata.orders.OrderStatus.*;
 import static java.math.BigDecimal.valueOf;
 import static java.math.RoundingMode.HALF_UP;
 
@@ -22,31 +23,27 @@ public class Order {
     private OrderStatus status = OrderStatus.CREATED;
     private int id;
 
-    public Order(int id, OrderStatus status) {
+    Order(int id, OrderStatus status) {
         this.id = id;
         this.status = status;
     }
 
-    public Order() {
+    Order() {
     }
 
-    public BigDecimal getTotal() {
+    BigDecimal getTotal() {
         return total;
     }
 
-    public String getCurrency() {
-        return "EUR";
-    }
-
-    public List<OrderItem> getItems() {
-        return items;
-    }
-
-    public BigDecimal getTax() {
+    BigDecimal getTax() {
         return tax;
     }
 
-    public OrderStatus getStatus() {
+    List<OrderItem> getItems() {
+        return items;
+    }
+
+    OrderStatus getStatus() {
         return status;
     }
 
@@ -72,6 +69,15 @@ public class Order {
 
     private void addItem(OrderItem orderItem) {
         items.add(orderItem);
+    }
+
+    void approved(boolean approved) {
+        if (approved) this.status = APPROVED;
+        else this.status = REJECTED;
+    }
+
+    public void shipped() {
+        this.status = SHIPPED;
     }
 
     @Override
@@ -100,14 +106,5 @@ public class Order {
                 .add("status=" + status)
                 .add("id=" + id)
                 .toString();
-    }
-
-    public void approved(boolean approved) {
-        if (approved) this.status = APPROVED;
-        else this.status = REJECTED;
-    }
-
-    public void shipped() {
-        this.status = SHIPPED;
     }
 }

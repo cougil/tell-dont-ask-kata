@@ -1,6 +1,6 @@
 package it.gabrieletondi.telldontaskkata.doubles;
 
-import it.gabrieletondi.telldontaskkata.domain.Order;
+import it.gabrieletondi.telldontaskkata.orders.Order;
 import it.gabrieletondi.telldontaskkata.repository.OrderRepository;
 
 import java.util.ArrayList;

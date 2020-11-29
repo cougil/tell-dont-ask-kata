@@ -1,14 +1,14 @@
-package it.gabrieletondi.telldontaskkata.domain;
+package it.gabrieletondi.telldontaskkata.orders;
 
-import it.gabrieletondi.telldontaskkata.orders.OrderObjectMother;
-import it.gabrieletondi.telldontaskkata.orders.UnknownProductException;
+import it.gabrieletondi.telldontaskkata.domain.OrderItem;
+import it.gabrieletondi.telldontaskkata.domain.Product;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.util.List;
 
-import static it.gabrieletondi.telldontaskkata.domain.OrderStatus.*;
+import static it.gabrieletondi.telldontaskkata.orders.OrderStatus.*;
 import static java.math.RoundingMode.HALF_UP;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -28,7 +28,6 @@ class OrderShould {
     void initialized_properly() {
         assertThat(order.getStatus()).isEqualTo(CREATED);
         assertThat(order.getItems()).isEmpty();
-        assertThat(order.getCurrency()).isEqualTo("EUR");
         assertThat(order.getTotal()).isEqualTo(ZERO);
         assertThat(order.getTax()).isEqualTo(ZERO);
     }

@@ -1,10 +1,9 @@
 package it.gabrieletondi.telldontaskkata.orders;
 
-import it.gabrieletondi.telldontaskkata.domain.Order;
 import it.gabrieletondi.telldontaskkata.repository.OrderRepository;
 import it.gabrieletondi.telldontaskkata.service.ShipmentService;
 
-import static it.gabrieletondi.telldontaskkata.domain.OrderStatus.*;
+import static it.gabrieletondi.telldontaskkata.orders.OrderStatus.*;
 
 public class OrderShipmentUseCase {
     private final OrderRepository orderRepository;
@@ -18,17 +17,16 @@ public class OrderShipmentUseCase {
     public void run(OrderShipmentRequest request) {
         final Order order = orderRepository.getById(request.getOrderId());
 
-        if (order.getStatus().equals(CREATED) || order.getStatus().equals(REJECTED)) {
+        if (CREATED.equals(order.getStatus()) || REJECTED.equals(order.getStatus())) {
             throw new OrderCannotBeShippedException();
         }
 
-        if (order.getStatus().equals(SHIPPED)) {
+        if (SHIPPED.equals(order.getStatus())) {
             throw new OrderCannotBeShippedTwiceException();
         }
 
         shipmentService.ship(order);
 
-        order.shipped();
         orderRepository.save(order);
     }
 }
